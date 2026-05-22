@@ -1,0 +1,13 @@
+[
+  {
+    "id": "ent_demo_001",
+    "date": "2026-03-25",
+    "description": "Asiento inicial",
+    "debitAccount": "572",
+    "creditAccount": "100",
+    "amount": 1500,
+    "reference": "Apertura",
+    "createdAt": "2026-03-25T00:00:00.000Z",
+    "updatedAt": "2026-03-25T00:00:00.000Z"
+  }
+]

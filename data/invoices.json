@@ -1,0 +1,19 @@
+[
+  {
+    "id": "inv_demo_001",
+    "number": "F-2026-001",
+    "date": "2026-03-25",
+    "dueDate": "",
+    "clientId": "cli_artes_001",
+    "concept": "Proyecto de branding",
+    "base": 1000,
+    "taxRate": 21,
+    "tax": 210,
+    "total": 1210,
+    "paidAmount": 0,
+    "status": "Pendiente",
+    "notes": "",
+    "createdAt": "2026-03-25T00:00:00.000Z",
+    "updatedAt": "2026-03-25T00:00:00.000Z"
+  }
+]

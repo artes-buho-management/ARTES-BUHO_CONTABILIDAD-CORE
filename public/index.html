@@ -1,0 +1,540 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CONTABILIDAD ARTES BUHO</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="locked">
+    <div id="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark">
+            <img src="./assets/logo-artes-buho.svg" alt="Logo ARTES BUHO" />
+          </div>
+          <div class="brand-text">
+            <h1>CONTABILIDAD ARTES BUHO</h1>
+            <p>ERP contable corporativo para ARTES BUHO - Desarrollado por RUBEN COTON</p>
+          </div>
+        </div>
+        <div class="search-wrap">
+          <input
+            id="globalSearch"
+            type="search"
+            placeholder="Buscar todo... (facturas, gastos, clientes, comandos: ir facturas)"
+            autocomplete="off"
+          />
+          <div id="searchResults" class="search-results hidden"></div>
+        </div>
+        <div class="top-actions">
+          <button id="btnRefresh" class="top-btn">Actualizar</button>
+          <button id="btnExport" class="top-btn">Exportar vista CSV</button>
+          <button id="btnUndo" class="top-btn top-btn-undo" disabled>Deshacer</button>
+          <button id="btnLogout" class="top-btn top-btn-danger">Salir</button>
+        </div>
+      </header>
+
+      <div class="layout">
+        <aside class="sidebar">
+          <button class="nav-btn active" data-view="dashboard">Inicio</button>
+          <button class="nav-btn" data-view="facturas">Facturas</button>
+          <button class="nav-btn" data-view="gastos">Gastos</button>
+          <button class="nav-btn" data-view="clientes">Clientes</button>
+          <button class="nav-btn" data-view="proveedores">Proveedores</button>
+          <button class="nav-btn" data-view="productos">Productos</button>
+          <button class="nav-btn" data-view="tesoreria">Tesoreria</button>
+          <button class="nav-btn" data-view="asientos">Asientos</button>
+          <button class="nav-btn" data-view="reportes">Reportes</button>
+          <button class="nav-btn" data-view="ajustes">Ajustes</button>
+        </aside>
+
+        <main class="content">
+          <div id="toast" class="toast hidden"></div>
+
+          <section class="view active" data-view="dashboard">
+            <h2>Resumen general</h2>
+            <div class="kpi-grid">
+              <article class="kpi-card">
+                <h3>Ventas</h3>
+                <p id="kpiSales">0 EUR</p>
+              </article>
+              <article class="kpi-card">
+                <h3>Gastos</h3>
+                <p id="kpiExpenses">0 EUR</p>
+              </article>
+              <article class="kpi-card">
+                <h3>Margen</h3>
+                <p id="kpiMargin">0 EUR</p>
+              </article>
+              <article class="kpi-card">
+                <h3>Pendiente de cobro</h3>
+                <p id="kpiPending">0 EUR</p>
+              </article>
+              <article class="kpi-card">
+                <h3>Saldo tesoreria</h3>
+                <p id="kpiBank">0 EUR</p>
+              </article>
+              <article class="kpi-card">
+                <h3>IVA neto</h3>
+                <p id="kpiVatNet">0 EUR</p>
+              </article>
+              <article class="kpi-card">
+                <h3>Facturas vencidas</h3>
+                <p id="kpiOverdue">0 | 0 EUR</p>
+              </article>
+              <article class="kpi-card">
+                <h3>Tasa de cobro</h3>
+                <p id="kpiCollection">0%</p>
+              </article>
+              <article class="kpi-card">
+                <h3>Cashflow del mes</h3>
+                <p id="kpiMonthCash">0 EUR</p>
+              </article>
+            </div>
+            <article class="panel">
+              <h3>Graficos de control</h3>
+              <div class="chart-grid">
+                <div class="chart-card">
+                  <h4>Vision financiera actual</h4>
+                  <canvas id="financeChart" width="900" height="260"></canvas>
+                </div>
+                <div class="chart-card">
+                  <h4>Evolucion mensual (PYG)</h4>
+                  <canvas id="monthlyChart" width="900" height="260"></canvas>
+                </div>
+              </div>
+            </article>
+            <article class="panel">
+              <h3>Actividad reciente</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Modulo</th>
+                      <th>Fecha</th>
+                      <th>Titulo</th>
+                      <th>Detalle</th>
+                      <th>Importe</th>
+                    </tr>
+                  </thead>
+                  <tbody id="activityTable"></tbody>
+                </table>
+              </div>
+            </article>
+            <article class="panel">
+              <h3>Auditoria reciente</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Accion</th>
+                      <th>Entidad</th>
+                      <th>Detalle</th>
+                      <th>Actor</th>
+                    </tr>
+                  </thead>
+                  <tbody id="auditTable"></tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+
+          <section class="view" data-view="facturas">
+            <h2>Facturas</h2>
+            <article class="panel">
+              <h3>Nueva factura</h3>
+              <form id="invoiceForm" class="form-grid">
+                <label>Fecha<input type="date" name="date" required /></label>
+                <label>Numero<input type="text" name="number" placeholder="F-2026-002" required /></label>
+                <label>Cliente
+                  <select name="clientId" id="invoiceClientSelect"></select>
+                </label>
+                <label>Concepto<input type="text" name="concept" required /></label>
+                <label>Vencimiento<input type="date" name="dueDate" /></label>
+                <label>Base imponible<input type="number" step="0.01" name="base" required /></label>
+                <label>IVA %<input type="number" step="0.01" name="taxRate" value="21" required /></label>
+                <label>Pagado<input type="number" step="0.01" name="paidAmount" value="0" /></label>
+                <label>Estado
+                  <select name="status">
+                    <option>Pendiente</option>
+                    <option>Parcial</option>
+                    <option>Pagada</option>
+                    <option>Vencida</option>
+                  </select>
+                </label>
+                <label class="full">Notas<textarea name="notes" rows="2"></textarea></label>
+                <div class="full"><button type="submit">Guardar factura</button></div>
+              </form>
+            </article>
+            <article class="panel">
+              <h3>Listado de facturas</h3>
+              <div class="filter-row">
+                <label>Estado
+                  <select id="invoiceFilterStatus">
+                    <option value="">Todos</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Parcial">Parcial</option>
+                    <option value="Pagada">Pagada</option>
+                    <option value="Vencida">Vencida</option>
+                  </select>
+                </label>
+                <label>Buscar
+                  <input id="invoiceFilterText" type="search" placeholder="Numero, cliente, concepto..." />
+                </label>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Numero</th>
+                      <th>Cliente</th>
+                      <th>Concepto</th>
+                      <th>Vencimiento</th>
+                      <th>Base</th>
+                      <th>IVA</th>
+                      <th>Total</th>
+                      <th>Pagado</th>
+                      <th>Pendiente</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="invoicesTable"></tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+
+          <section class="view" data-view="gastos">
+            <h2>Gastos</h2>
+            <article class="panel">
+              <h3>Nuevo gasto</h3>
+              <form id="expenseForm" class="form-grid">
+                <label>Fecha<input type="date" name="date" required /></label>
+                <label>Proveedor
+                  <select name="supplierId" id="expenseSupplierSelect"></select>
+                </label>
+                <label>Concepto<input type="text" name="concept" required /></label>
+                <label>Categoria<input type="text" name="category" placeholder="Suministros" /></label>
+                <label>Base imponible<input type="number" step="0.01" name="base" required /></label>
+                <label>IVA %<input type="number" step="0.01" name="taxRate" value="21" required /></label>
+                <label>Forma pago<input type="text" name="paymentMethod" placeholder="Transferencia" /></label>
+                <label>Estado
+                  <select name="status">
+                    <option>Pagado</option>
+                    <option>Pendiente</option>
+                  </select>
+                </label>
+                <label class="full">Notas<textarea name="notes" rows="2"></textarea></label>
+                <div class="full"><button type="submit">Guardar gasto</button></div>
+              </form>
+            </article>
+            <article class="panel">
+              <h3>Listado de gastos</h3>
+              <div class="filter-row">
+                <label>Estado
+                  <select id="expenseFilterStatus">
+                    <option value="">Todos</option>
+                    <option value="Pagado">Pagado</option>
+                    <option value="Pendiente">Pendiente</option>
+                  </select>
+                </label>
+                <label>Buscar
+                  <input id="expenseFilterText" type="search" placeholder="Proveedor, concepto, categoria..." />
+                </label>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Proveedor</th>
+                      <th>Concepto</th>
+                      <th>Categoria</th>
+                      <th>Base</th>
+                      <th>IVA</th>
+                      <th>Total</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="expensesTable"></tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+
+          <section class="view" data-view="clientes">
+            <h2>Clientes</h2>
+            <article class="panel">
+              <h3>Nuevo cliente</h3>
+              <form id="clientForm" class="form-grid">
+                <label>Nombre<input type="text" name="name" required /></label>
+                <label>NIF<input type="text" name="nif" /></label>
+                <label>Email<input type="email" name="email" /></label>
+                <label>Telefono<input type="text" name="phone" /></label>
+                <label class="full">Direccion<input type="text" name="address" /></label>
+                <label class="full">Notas<textarea name="notes" rows="2"></textarea></label>
+                <div class="full"><button type="submit">Guardar cliente</button></div>
+              </form>
+            </article>
+            <article class="panel">
+              <h3>Listado de clientes</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>NIF</th>
+                      <th>Email</th>
+                      <th>Telefono</th>
+                      <th>Direccion</th>
+                    </tr>
+                  </thead>
+                  <tbody id="clientsTable"></tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+
+          <section class="view" data-view="proveedores">
+            <h2>Proveedores</h2>
+            <article class="panel">
+              <h3>Nuevo proveedor</h3>
+              <form id="supplierForm" class="form-grid">
+                <label>Nombre<input type="text" name="name" required /></label>
+                <label>NIF<input type="text" name="nif" /></label>
+                <label>Email<input type="email" name="email" /></label>
+                <label>Telefono<input type="text" name="phone" /></label>
+                <label class="full">Direccion<input type="text" name="address" /></label>
+                <label class="full">Notas<textarea name="notes" rows="2"></textarea></label>
+                <div class="full"><button type="submit">Guardar proveedor</button></div>
+              </form>
+            </article>
+            <article class="panel">
+              <h3>Listado de proveedores</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>NIF</th>
+                      <th>Email</th>
+                      <th>Telefono</th>
+                      <th>Direccion</th>
+                    </tr>
+                  </thead>
+                  <tbody id="suppliersTable"></tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+
+          <section class="view" data-view="productos">
+            <h2>Productos y servicios</h2>
+            <article class="panel">
+              <h3>Nuevo item</h3>
+              <form id="productForm" class="form-grid">
+                <label>SKU<input type="text" name="sku" /></label>
+                <label>Nombre<input type="text" name="name" required /></label>
+                <label>Categoria<input type="text" name="category" /></label>
+                <label>Precio<input type="number" step="0.01" name="unitPrice" /></label>
+                <label>IVA %<input type="number" step="0.01" name="taxRate" value="21" /></label>
+                <label class="full">Notas<textarea name="notes" rows="2"></textarea></label>
+                <div class="full"><button type="submit">Guardar producto/servicio</button></div>
+              </form>
+            </article>
+            <article class="panel">
+              <h3>Listado de items</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>SKU</th>
+                      <th>Nombre</th>
+                      <th>Categoria</th>
+                      <th>Precio</th>
+                      <th>IVA</th>
+                    </tr>
+                  </thead>
+                  <tbody id="productsTable"></tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+
+          <section class="view" data-view="tesoreria">
+            <h2>Tesoreria</h2>
+            <article class="panel">
+              <h3>Nuevo movimiento bancario</h3>
+              <form id="bankForm" class="form-grid">
+                <label>Fecha<input type="date" name="date" required /></label>
+                <label>Cuenta<input type="text" name="account" placeholder="Banco principal" /></label>
+                <label>Tipo
+                  <select name="type">
+                    <option>Ingreso</option>
+                    <option>Gasto</option>
+                  </select>
+                </label>
+                <label>Concepto<input type="text" name="concept" required /></label>
+                <label>Importe<input type="number" step="0.01" name="amount" required /></label>
+                <label>Conciliado
+                  <select name="reconciled">
+                    <option value="true">Si</option>
+                    <option value="false">No</option>
+                  </select>
+                </label>
+                <div class="full"><button type="submit">Guardar movimiento</button></div>
+              </form>
+            </article>
+            <article class="panel">
+              <h3>Listado de movimientos</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Cuenta</th>
+                      <th>Tipo</th>
+                      <th>Concepto</th>
+                      <th>Importe</th>
+                      <th>Conciliado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bankTable"></tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+
+          <section class="view" data-view="asientos">
+            <h2>Asientos contables</h2>
+            <article class="panel">
+              <h3>Nuevo asiento</h3>
+              <form id="entryForm" class="form-grid">
+                <label>Fecha<input type="date" name="date" required /></label>
+                <label>Descripcion<input type="text" name="description" required /></label>
+                <label>Cuenta debe<input type="text" name="debitAccount" placeholder="572" /></label>
+                <label>Cuenta haber<input type="text" name="creditAccount" placeholder="700" /></label>
+                <label>Importe<input type="number" step="0.01" name="amount" required /></label>
+                <label>Referencia<input type="text" name="reference" /></label>
+                <div class="full"><button type="submit">Guardar asiento</button></div>
+              </form>
+            </article>
+            <article class="panel">
+              <h3>Listado de asientos</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Descripcion</th>
+                      <th>Debe</th>
+                      <th>Haber</th>
+                      <th>Importe</th>
+                      <th>Referencia</th>
+                    </tr>
+                  </thead>
+                  <tbody id="entriesTable"></tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+
+          <section class="view" data-view="reportes">
+            <h2>Reportes</h2>
+            <article class="panel">
+              <h3>Cuenta de resultados (PYG)</h3>
+              <form id="pnlForm" class="form-grid">
+                <label>Desde<input id="pnlFrom" type="date" name="from" /></label>
+                <label>Hasta<input id="pnlTo" type="date" name="to" /></label>
+                <div class="full"><button type="submit">Generar PYG</button></div>
+              </form>
+              <div class="report-kpis report-kpis-grid">
+                <div><strong>Ventas:</strong> <span id="pnlSales">0 EUR</span></div>
+                <div><strong>Gastos:</strong> <span id="pnlExpenses">0 EUR</span></div>
+                <div><strong>Margen:</strong> <span id="pnlMargin">0 EUR</span></div>
+                <div><strong>Tasa cobro:</strong> <span id="pnlCollection">0%</span></div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Mes</th>
+                      <th>Ventas</th>
+                      <th>Gastos</th>
+                      <th>Margen</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pnlMonthlyTable"></tbody>
+                </table>
+              </div>
+            </article>
+            <article class="panel">
+              <h3>Resumen de IVA</h3>
+              <form id="vatForm" class="form-grid">
+                <label>Desde<input type="date" name="from" /></label>
+                <label>Hasta<input type="date" name="to" /></label>
+                <div class="full"><button type="submit">Generar reporte IVA</button></div>
+              </form>
+              <div class="report-kpis">
+                <div><strong>IVA repercutido:</strong> <span id="vatOutput">0 EUR</span></div>
+                <div><strong>IVA soportado:</strong> <span id="vatInput">0 EUR</span></div>
+                <div><strong>IVA neto:</strong> <span id="vatNet">0 EUR</span></div>
+              </div>
+            </article>
+          </section>
+
+          <section class="view" data-view="ajustes">
+            <h2>Ajustes de empresa</h2>
+            <article class="panel">
+              <h3>Datos generales</h3>
+              <form id="configForm" class="form-grid">
+                <label>App<input type="text" name="appName" /></label>
+                <label>Empresa<input type="text" name="empresa" /></label>
+                <label>Desarrollador<input type="text" name="desarrollador" /></label>
+                <label>NIF<input type="text" name="nif" /></label>
+                <label>Email<input type="email" name="email" /></label>
+                <label>Telefono<input type="text" name="telefono" /></label>
+                <label class="full">Direccion<input type="text" name="direccion" /></label>
+                <label>Moneda<input type="text" name="moneda" /></label>
+                <label>Ejercicio<input type="text" name="ejercicio" /></label>
+                <div class="full"><button type="submit">Guardar ajustes</button></div>
+              </form>
+            </article>
+            <article class="panel">
+              <h3>Seguridad</h3>
+              <form id="passwordForm" class="form-grid">
+                <label>Password actual<input type="password" name="currentPassword" required /></label>
+                <label>Nueva password<input type="password" name="newPassword" required /></label>
+                <div class="full"><button type="submit">Cambiar password</button></div>
+              </form>
+            </article>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+      <form id="loginForm" class="modal-card">
+        <div class="modal-logo-wrap">
+          <img class="modal-logo" src="./assets/logo-artes-buho.svg" alt="Logo ARTES BUHO" />
+        </div>
+        <h3>Acceso seguro</h3>
+        <p>Introduce la password para entrar en CONTABILIDAD ARTES BUHO.</p>
+        <label>Password
+          <input type="password" name="password" required />
+        </label>
+        <button type="submit">Entrar</button>
+        <small id="loginHint">Usa la password configurada para esta instalacion local.</small>
+      </form>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
+

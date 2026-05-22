@@ -1,0 +1,21 @@
+﻿<svg width="220" height="220" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo ARTES BUHO">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f9a15e"/>
+      <stop offset="55%" stop-color="#f06c4d"/>
+      <stop offset="100%" stop-color="#cb142f"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f39c6a"/>
+      <stop offset="60%" stop-color="#ef6b4b"/>
+      <stop offset="100%" stop-color="#c6112d"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#9b0f24" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="220" height="220" rx="42" fill="#ffffff"/>
+  <path d="M48 140C40 140 34 133 36 126C49 93 66 65 86 42C95 31 114 34 120 47C127 60 122 76 111 84C92 99 76 119 62 137C58 142 53 144 48 140Z" fill="url(#g1)" filter="url(#soft)"/>
+  <path d="M126 38C126 30 132 24 140 24H148C170 24 188 42 188 64C188 82 177 93 164 102C177 110 188 123 188 142V146C188 168 170 186 148 186H140C132 186 126 180 126 172V38Z" fill="url(#g2)" filter="url(#soft)"/>
+  <path d="M127 120C135 120 142 124 146 131C151 139 158 145 168 149C175 152 177 161 173 167C169 174 160 176 153 172C141 166 131 157 123 146C118 138 120 127 127 122V120Z" fill="#d11632" opacity="0.7"/>
+</svg>

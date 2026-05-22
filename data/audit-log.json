@@ -1,0 +1,98 @@
+[
+  {
+    "id": "aud_bootstrap_001",
+    "at": "2026-03-25T00:00:00.000Z",
+    "action": "BOOTSTRAP",
+    "entity": "system",
+    "detail": "Inicializacion de CONTABILIDAD ARTES BUHO",
+    "actor": "system"
+  },
+  {
+    "id": "aud_3798064e8c97",
+    "at": "2026-03-26T09:34:42.993Z",
+    "action": "LOGIN",
+    "entity": "auth",
+    "detail": "Inicio de sesion",
+    "actor": "admin"
+  },
+  {
+    "id": "aud_8e79a31ce9fa",
+    "at": "2026-03-26T09:35:12.084Z",
+    "action": "LOGIN",
+    "entity": "auth",
+    "detail": "Inicio de sesion",
+    "actor": "admin"
+  },
+  {
+    "id": "aud_c7c4a98854a1",
+    "at": "2026-03-26T09:35:18.874Z",
+    "action": "LOGIN",
+    "entity": "auth",
+    "detail": "Inicio de sesion",
+    "actor": "admin"
+  },
+  {
+    "id": "aud_a6a4063546d1",
+    "at": "2026-03-26T14:31:30.887Z",
+    "action": "LOGIN",
+    "entity": "auth",
+    "detail": "Inicio de sesion",
+    "actor": "admin"
+  },
+  {
+    "id": "aud_779db0351940",
+    "at": "2026-03-26T14:40:06.398Z",
+    "action": "LOGIN",
+    "entity": "auth",
+    "detail": "Inicio de sesion",
+    "actor": "admin"
+  },
+  {
+    "id": "aud_1675961112de",
+    "at": "2026-03-26T19:00:07.471Z",
+    "action": "LOGIN",
+    "entity": "auth",
+    "detail": "Inicio de sesion",
+    "actor": "admin"
+  },
+  {
+    "id": "aud_7cf1da6a8563",
+    "at": "2026-03-26T19:45:30.292Z",
+    "action": "LOGIN",
+    "entity": "auth",
+    "detail": "Inicio de sesion",
+    "actor": "admin"
+  },
+  {
+    "id": "aud_83fc4025078c",
+    "at": "2026-03-26T20:47:08.572Z",
+    "action": "LOGIN",
+    "entity": "auth",
+    "detail": "Inicio de sesion",
+    "actor": "admin"
+  },
+  {
+    "id": "aud_98f2ca5e9a05",
+    "at": "2026-03-26T21:30:13.921Z",
+    "action": "LOGIN",
+    "entity": "auth",
+    "detail": "Inicio de sesion",
+    "actor": "admin"
+  },
+  {
+    "id": "aud_1f03e89063ed",
+    "at": "2026-03-27T06:59:48.026Z",
+    "action": "LOGIN",
+    "entity": "auth",
+    "detail": "Inicio de sesion",
+    "actor": "admin"
+  },
+  {
+    "id": "aud_21552b09b03e",
+    "at": "2026-03-27T07:01:13.712Z",
+    "action": "LOGIN",
+    "entity": "auth",
+    "detail": "Inicio de sesion",
+    "actor": "admin"
+  }
+]

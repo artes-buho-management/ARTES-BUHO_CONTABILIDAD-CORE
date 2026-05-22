@@ -1,0 +1,13 @@
+[
+  {
+    "id": "prd_demo_001",
+    "sku": "SERV-001",
+    "name": "Servicio creativo",
+    "category": "Servicios",
+    "unitPrice": 200,
+    "taxRate": 21,
+    "notes": "",
+    "createdAt": "2026-03-25T00:00:00.000Z",
+    "updatedAt": "2026-03-25T00:00:00.000Z"
+  }
+]

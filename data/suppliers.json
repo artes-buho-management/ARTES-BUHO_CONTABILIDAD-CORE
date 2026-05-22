@@ -1,0 +1,13 @@
+[
+  {
+    "id": "sup_demo_001",
+    "name": "Proveedor Demo SL",
+    "nif": "B00000002",
+    "email": "proveedor.demo@example.com",
+    "phone": "+34 6XX XXX XXX",
+    "address": "Calle Industrial 20, Sevilla",
+    "notes": "Proveedor de ejemplo",
+    "createdAt": "2026-03-25T00:00:00.000Z",
+    "updatedAt": "2026-03-25T00:00:00.000Z"
+  }
+]

@@ -1,0 +1,55 @@
+{
+  "appName": "CONTABILIDAD ARTES BUHO",
+  "empresa": "ARTES BUHO",
+  "desarrollador": "RUBEN COTON",
+  "nif": "",
+  "email": "",
+  "telefono": "",
+  "direccion": "",
+  "moneda": "EUR",
+  "ejercicio": "2026",
+  "createdAt": "2026-03-25T00:00:00.000Z",
+  "updatedAt": "2026-03-25T00:00:00.000Z",
+  "chartOfAccounts": [
+    {
+      "code": "100",
+      "name": "Capital social"
+    },
+    {
+      "code": "430",
+      "name": "Clientes"
+    },
+    {
+      "code": "400",
+      "name": "Proveedores"
+    },
+    {
+      "code": "472",
+      "name": "HP IVA soportado"
+    },
+    {
+      "code": "477",
+      "name": "HP IVA repercutido"
+    },
+    {
+      "code": "570",
+      "name": "Caja"
+    },
+    {
+      "code": "572",
+      "name": "Bancos"
+    },
+    {
+      "code": "600",
+      "name": "Compras"
+    },
+    {
+      "code": "628",
+      "name": "Suministros"
+    },
+    {
+      "code": "700",
+      "name": "Ventas"
+    }
+  ]
+}

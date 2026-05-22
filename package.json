@@ -1,0 +1,20 @@
+{
+  "name": "contabilidad-artes-buho",
+  "version": "1.0.0",
+  "description": "Software local de contabilidad y gestion para ARTES BUHO",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:local": "set HOST=127.0.0.1&&set PORT=4070&&node server.js",
+    "start:lan": "set HOST=0.0.0.0&&set PORT=4070&&node server.js"
+  },
+  "keywords": [
+    "contabilidad",
+    "pymes",
+    "artes-buho",
+    "facturacion",
+    "tesoreria"
+  ],
+  "author": "RUBEN COTON",
+  "license": "UNLICENSED"
+}

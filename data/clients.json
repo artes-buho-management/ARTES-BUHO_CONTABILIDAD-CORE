@@ -1,0 +1,13 @@
+[
+  {
+    "id": "cli_artes_001",
+    "name": "Cliente Demo SL",
+    "nif": "B00000001",
+    "email": "cliente.demo@example.com",
+    "phone": "+34 6XX XXX XXX",
+    "address": "Calle Principal 1, Madrid",
+    "notes": "Cliente de ejemplo",
+    "createdAt": "2026-03-25T00:00:00.000Z",
+    "updatedAt": "2026-03-25T00:00:00.000Z"
+  }
+]
